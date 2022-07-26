@@ -119,3 +119,93 @@ fun main(args: Array<String>) {
 }
 ```
 
+- 메인 스레드에서 대기하게 된다.
+
+```kotlin
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
+import kotlin.system.measureTimeMillis
+import kotlinx.coroutines.async
+
+suspend fun longRunningTsk():Long {//(1)
+    val time = measureTimeMillis {//(2)
+        println("Please wait")
+        delay(2000)//(3)
+        println("Delay Over")
+    }
+    return time
+}
+
+fun main(args: Array<String>) {
+    runBlocking {
+        val time = async{ longRunningTsk() }
+        println("Print after async ")
+        println("printing time ${time.await()}")
+    }
+
+}
+```
+
+- runBlocking과 aync를 사용
+
+
+
+#### 시퀸스 생성
+
+```kotlin
+fun main(args: Array<String>) {
+
+    val fibonacciSeries = sequence {
+        var a = 0
+        var b = 1
+
+        yield(a)
+        yield(b)
+
+        while (true){
+            val c = a+b
+            yield(c)
+            a=b
+            b=c
+        }
+    }
+
+    println(fibonacciSeries.take(10).joinToString())
+}
+
+```
+
+- 시퀸스를 통한 피보나치 프로그램
+
+
+
+> 참고
+>
+> https://underdog11.tistory.com/entry/Kotlin-%EC%BD%94%EB%A3%A8%ED%8B%B4-Coroutine-async%EA%B3%BC-await-LifecycleScope%EA%B3%BC-ViewModelScope-3%ED%8E%B8
+
+
+
+### 모나드<sup>Monad</sup> - Maybe
+
+```kotlin
+fun main(args: Array<String>) {
+    val maybeValue: Maybe<Int> = Maybe.just(14)//1
+    maybeValue.subscribeBy(//2
+        onComplete = {println("Completed Empty")},
+        onError = {println("Error $it")},
+        onSuccess = { println("Completed with value $it")}
+    )
+    val maybeEmpty:Maybe<Int> = Maybe.empty()//3
+    maybeEmpty.subscribeBy(
+        onComplete = {println("Completed Empty")},//4
+        onError = {println("Error $it")},//5
+        onSuccess = { println("Completed with value $it")}//6
+    )
+}
+```
+
+- Maybe는 모나드로서 Int값을 캡슐화하고 추가 기능을 제공한다.
+- Maybe는 모나드로서 값을 포함할 수도 있고, 포함하지 않을 수도 있으며 값, 오류와 관계없이 완료된다.
+- 오류가 발생 했을 때 onError 호출
+- 값이 존재하면 onSuccess 호출
+- 값도 없고 오류도 없을 경우 onComplete 호출
