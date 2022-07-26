@@ -1,3 +1,5 @@
+package ch02
+
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlin.system.measureTimeMillis
@@ -13,7 +15,9 @@ suspend fun longRunningTsk():Long {//(1)
 }
 
 fun main(args: Array<String>) {
-    val time = async(CommonPool) { longRunningTsk() }
-    println("Print after async ")
-    runBlocking { println("printing time ${time.await()}") }
+    runBlocking {
+        val time = async{ longRunningTsk() }
+        println("Print after async ")
+        println("printing time ${time.await()}")
+    }
 }

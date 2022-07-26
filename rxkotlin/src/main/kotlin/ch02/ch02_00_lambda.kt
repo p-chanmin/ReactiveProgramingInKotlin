@@ -1,4 +1,4 @@
-package com.reactivekotlin.chapter02
+package ch02
 
 import java.util.*
 

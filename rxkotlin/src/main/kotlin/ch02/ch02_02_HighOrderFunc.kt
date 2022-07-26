@@ -1,3 +1,6 @@
+package ch02
+
+import ch01.isEven
 
 fun highOrderFunc(a:Int, validityCheckFunc:(a:Int)->Boolean) {//(1)
     if(validityCheckFunc(a)) {//(2)

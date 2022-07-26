@@ -1,4 +1,4 @@
-package com.reactivekotlin.chapter02
+package ch02
 
 fun square(n:Int):Int {//(1)
     return n*n
