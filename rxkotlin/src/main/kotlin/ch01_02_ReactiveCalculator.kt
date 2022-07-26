@@ -18,21 +18,13 @@ fun main(){
 }
 
 class ReactiveCalculator(a:Int, b:Int){
-    internal val subjectAdd: Subject<Pair<Int, Int>> = PublishSubject.create()
-    internal val subjectSub: Subject<Pair<Int, Int>> = PublishSubject.create()
-    internal val subjectMult: Subject<Pair<Int, Int>> = PublishSubject.create()
-    internal val subjectDiv: Subject<Pair<Int, Int>> = PublishSubject.create()
 
-    internal val subjectCalc: Subject<ReactiveCalculator> = PublishSubject.create()
+    val subjectCalc: Subject<ReactiveCalculator> = PublishSubject.create()
 
-    internal var nums: Pair<Int, Int> = Pair(0,0)
+    var nums: Pair<Int, Int> = Pair(0,0)
 
     init {
         nums = Pair(a,b)
-        subjectAdd.map { it.first + it.second }.subscribe { println("Add = $it") }
-        subjectSub.map { it.first - it.second }.subscribe { println("Substract = $it") }
-        subjectMult.map { it.first * it.second }.subscribe { println("Multiply = $it") }
-        subjectDiv.map { it.first / it.second }.subscribe { println("Divide = $it") }
 
         subjectCalc.subscribe {
             with(it){
@@ -45,20 +37,28 @@ class ReactiveCalculator(a:Int, b:Int){
         subjectCalc.onNext(this)
     }
 
-    fun calculateAddition(){
-        subjectAdd.onNext(nums)
+    inline fun calculateAddition(): Int {
+        val result = nums.first + nums.second
+        println("Add = $result")
+        return result
     }
-    fun calculateSubstraction(){
-        subjectSub.onNext(nums)
+    inline fun calculateSubstraction(): Int{
+        val result = nums.first - nums.second
+        println("Substract = $result")
+        return result
     }
-    fun calculateMultiplication(){
-        subjectMult.onNext(nums)
+    inline fun calculateMultiplication(): Int{
+        val result = nums.first * nums.second
+        println("Multiply = $result")
+        return result
     }
-    fun calculateDivision(){
-        subjectDiv.onNext(nums)
+    inline fun calculateDivision(): Double{
+        val result = (nums.first*1.0) / (nums.second*1.0)
+        println("Division = $result")
+        return result
     }
 
-    fun modifyNumber(a: Int = nums.first, b: Int = nums.second){
+    inline fun modifyNumber(a: Int = nums.first, b: Int = nums.second){
         nums = Pair(a, b)
         subjectCalc.onNext(this)
     }
