@@ -1,9 +1,9 @@
 package ch02
 
+import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlin.system.measureTimeMillis
-import kotlinx.coroutines.async
 
 suspend fun longRunningTsk():Long {//(1)
     val time = measureTimeMillis {//(2)

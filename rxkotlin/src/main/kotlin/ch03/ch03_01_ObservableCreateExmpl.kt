@@ -3,7 +3,6 @@ package ch03
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
-import io.reactivex.rxkotlin.toObservable
 
 fun main(args: Array<String>) {
 
